@@ -2,6 +2,7 @@ import express from "express";
 import providerAuthRoutes from "./routes/provider.auth.routes.js";
 import providerRoutes from "./routes/provider.routes.js";
 import serviceRoutes from "./routes/service.routes.js";
+import customerAuthRoutes from "./routes/customer.auth.routes.js";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
@@ -15,6 +16,9 @@ app.use(cookieParser());
 app.use("/api/provider/auth", providerAuthRoutes);
 app.use("/api/provider/profile", providerRoutes);
 app.use("/api/services", serviceRoutes);
+
+
+app.use("/api/customer", customerAuthRoutes);
 
 app.use(errorHandler);
 

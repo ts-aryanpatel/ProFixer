@@ -1,5 +1,6 @@
 import * as tokenUtil from "../utils/token.util.js";
 import providerModel from "../models/provider.model.js";
+import Customer from "../models/customer.model.js";
 
 export const verifyProvider = async (req, res, next) => {
     try {
@@ -36,6 +37,50 @@ export const verifyProvider = async (req, res, next) => {
         req.provider = provider;
 
         next();
+
+    } catch (err) {
+        return res.status(401).json({
+            success: false,
+            message: "Invalid or expired access token"
+        });
+    }
+};
+
+
+export const verifyCustomer = async (req, res, next) => {
+    try {
+        const token = req.headers.authorization?.split(" ")[ 1 ];
+
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: 'Token not found'
+            });
+        }
+
+        let decoded;
+        try {
+            decoded = tokenUtil.verifyAccessToken(token);
+        } catch (err) {
+            console.log("Token Error: ", err);
+            return res.status(401).json({
+                success: false,
+                message: "Invalid or Expired access token"
+            });
+        }
+
+        const customer = await Customer.findById(decoded.id);
+        if (!customer) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid token"
+            });
+        }
+
+        req.customer = customer;
+
+        next();
+
 
     } catch (err) {
         return res.status(401).json({

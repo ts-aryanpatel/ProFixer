@@ -9,7 +9,7 @@ const tokenSchema = new mongoose.Schema({
     onModel: {
         type: String,
         required: true,
-        enum: ['provider', 'user']
+        enum: ['provider', 'customer']
     },
     refreshTokenHash: {
         type: String,

@@ -13,13 +13,13 @@ router.post("/register", validate(providerRegisterSchema), providerAuthControlle
 // POST  /api/provider/auth/login
 router.post("/login", validate(providerLoginSchema), providerAuthController.login);
 
-// GET  /api/provider/auth/refresh-token
-router.get("/refresh-token", providerAuthController.refreshToken);
+// post  /api/provider/auth/refresh-token
+router.post("/refresh-token", providerAuthController.refreshToken);
 
-// GET  /api/provider/auth/logout
-router.get("/logout", verifyProvider, providerAuthController.logout);
+// post  /api/provider/auth/logout
+router.post("/logout", verifyProvider, providerAuthController.logout);
 
-// GET  /api/provider/auth/logout-all
-router.get("/logout-all", verifyProvider, providerAuthController.logoutAll);
+// post  /api/provider/auth/logout-all
+router.post("/logout-all", verifyProvider, providerAuthController.logoutAll);
 
 export default router;
