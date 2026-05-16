@@ -1,0 +1,6 @@
+# Backend dependencies and secrets
+Backend/node_modules/
+Backend/.env
+
+# Frontend dependencies (just to be double safe)
+Frontend/node_modules/

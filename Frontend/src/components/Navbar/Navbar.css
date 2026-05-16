@@ -1,0 +1,168 @@
+.navbar {
+    background-color: var(--bg-pure-white);
+    border-bottom: 1px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.logo span {
+    color: var(--secondary-blue);
+}
+
+.nav-menu-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    margin-left: 48px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links a {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--secondary-blue);
+}
+
+.nav-actions {
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.btn-login {
+    background-color: var(--secondary-blue);
+    color: var(--bg-pure-white);
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-login:hover {
+    background-color: var(--primary-blue);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--text-dark);
+    border: 1px solid var(--border-light);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: var(--bg-light-gray);
+    border-color: var(--text-muted);
+}
+
+.burger-menu .bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-dark);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .burger-menu {
+        display: flex;
+    }
+
+    .burger-menu.open .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .burger-menu.open .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .burger-menu.open .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-menu-wrapper {
+        position: absolute;
+        top: 55px;
+        right: -24px;
+        width: calc(100% + 48px);
+        background-color: var(--bg-pure-white);
+        flex-direction: column;
+        gap: 24px;
+        padding: 32px 24px;
+        border-bottom: 1px solid var(--border-light);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        margin-left: 0;
+        transform: translateY(-120%);
+        transition: transform 0.4s ease-in-out;
+        z-index: 999;
+    }
+
+    /* Jab state active hogi toh smooth niche slide karega */
+  .nav-menu-wrapper.active {
+    transform: translateY(0);
+  }
+
+  .nav-links {
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    gap: 20px;
+  }
+
+  .nav-links a {
+    font-size: 18px; /* Mobile tap target ke liye bada size */
+    display: block;
+    padding: 8px 0;
+  }
+
+  .nav-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    margin-left: 0;
+  }
+
+  .nav-actions button {
+    width: 100%; /* Buttons full width ho jayenge comfortable click ke liye */
+    padding: 12px;
+  }
+
+}

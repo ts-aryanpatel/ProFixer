@@ -1,0 +1,213 @@
+/* src/pages/ServicesPage/ServicesPage.css */
+
+.services-dir-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 40px auto;
+  padding: 0 24px;
+}
+
+.services-dir-header {
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+}
+
+.services-dir-header h1 {
+  font-size: 36px;
+  color: var(--text-dark);
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+/* Two Column Layout split */
+.services-dir-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Sidebar Styling */
+.categories-sidebar {
+  flex: 0.8;
+  background-color: var(--bg-light-gray);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: sticky;
+  top: 90px; /* Window scroll par fixed rahega side layout */
+}
+
+.sidebar-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.sidebar-tab-btn:hover {
+  background-color: var(--bg-pure-white);
+  border-color: var(--border-light);
+}
+
+.sidebar-tab-btn.active {
+  background-color: var(--secondary-blue);
+  color: white;
+  border-color: var(--secondary-blue);
+}
+
+.sidebar-tab-btn.active .cat-name {
+  color: white;
+}
+
+.cat-icon {
+  font-size: 20px;
+}
+
+.cat-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* Sub-Services Content Section */
+.sub-services-content {
+  flex: 2.2;
+}
+
+.results-count {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.sub-services-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Horizontal Service Row Design */
+.sub-service-card {
+  background-color: var(--bg-pure-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  transition: box-shadow 0.2s;
+}
+
+.sub-service-card:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-light);
+}
+
+.card-main-info h3 {
+  font-size: 19px;
+  color: var(--text-dark);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.service-description {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.service-metadata {
+  display: flex;
+  gap: 16px;
+}
+
+.meta-time, .meta-warranty {
+  font-size: 12px;
+  font-weight: 600;
+  background-color: var(--bg-light-gray);
+  color: var(--text-dark);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+/* Right Side Button and Pricing Box */
+.card-action-side {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 130px;
+}
+
+.service-price {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.btn-add-task {
+  background-color: var(--secondary-blue);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-add-task:hover {
+  background-color: var(--primary-blue);
+}
+
+/* --- Mobile Responsive Layout Adaptation --- */
+@media (max-width: 768px) {
+  .services-dir-layout {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  /* Sidebar turns into horizontal scroll bar on mobile view */
+  .categories-sidebar {
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+    position: static;
+    padding: 10px;
+    white-space: nowrap;
+  }
+  
+  .sidebar-tab-btn {
+    padding: 10px 14px;
+    width: auto;
+  }
+  
+  .sub-service-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .card-action-side {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-light);
+    padding-top: 14px;
+  }
+}
