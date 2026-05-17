@@ -34,7 +34,7 @@ const customerSchema = new mongoose.Schema({
         default: 'https://placeholder.com/avatar.png',
     },
     addresses: [{
-        addressLine: { type: String, required: true },
+        street: { type: String, required: true },
         city: { type: String, required: true },
         state: { type: String, required: true },
         pincode: { type: String, requird: true },

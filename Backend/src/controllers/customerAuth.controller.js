@@ -53,6 +53,10 @@ export const loginCustomer = asyncHandler( async (req, res) => {
         throw new ApiError(401, "Invalid credentials");
     }
 
+    if (customer.isActive === false) {
+        throw new ApiError(403, "Your account has been deactivated. Please contact support to reactivate it.");
+    }
+
     const isMatchPassword = await bcrypt.compare(password, customer.password);
     if (!isMatchPassword) {
         throw new ApiError(401, "Invalid credentials");
