@@ -37,7 +37,7 @@ const customerSchema = new mongoose.Schema({
         street: { type: String, required: true },
         city: { type: String, required: true },
         state: { type: String, required: true },
-        pincode: { type: String, requird: true },
+        pincode: { type: String, required: true },
         label: { type: String, enum: ['Home', 'Work', 'Other'], default: 'Home' },
         location: {
             type: {

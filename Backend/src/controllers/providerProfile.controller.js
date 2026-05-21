@@ -21,6 +21,7 @@ export const getProfile = asyncHandler(async (req, res) => {
             phoneNumber: provider.phoneNumber,
             category: provider.category,
             city: provider.city,
+            coordinates: provider.location?.coordinates || [],
             experience: provider.experience,
             skills: provider.skills,
             bio: provider.bio,
@@ -38,6 +39,16 @@ export const updateProfile = asyncHandler(async (req, res) => {
 
     if (Object.keys(req.body).length === 0) {
         throw new ApiError(400, "No valid fields provided for update")
+    }
+
+    if (req.body.coordinates) {
+        req.body.location = {
+            type: "Point",
+            coordinates: req.body.coordinates // Direct array of numbers [longitude, latitude]
+        };
+        
+        // Raw coordinates field delete ki taaki schema strictness pass ho jaye
+        delete req.body.coordinates;
     }
 
     const updateProvider = await providerModel.findByIdAndUpdate(

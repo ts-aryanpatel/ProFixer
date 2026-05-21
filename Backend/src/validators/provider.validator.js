@@ -76,7 +76,13 @@ export const updateProfileSchema = z.object({
     category: z
         .string()
         .trim()
-        .optional()
+        .optional(),
+
+    coordinates: z
+        .array(z.number({ invalid_type_error: "Each coordinate must be a number" }))
+        .length(2, { message: "Coordinates must contain exactly 2 numbers [longitude, latitude]" })
+        .optional(),
+        
 }).strict({ message: "Extra or unexpected fields are not allowed" });
 
 
