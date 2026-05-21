@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const serviceSchema = new mongoose.Schema({
     providerId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'provider',
+        ref: 'Provider',
         required: true
     },
     name: {
@@ -37,6 +37,6 @@ const serviceSchema = new mongoose.Schema({
 
 serviceSchema.index({ providerId: 1, category: 1});
 
-const serviceModel = mongoose.model('service', serviceSchema);
+const serviceModel = mongoose.model('Service', serviceSchema);
 
 export default serviceModel;

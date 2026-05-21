@@ -30,7 +30,7 @@ const providerSchema = new mongoose.Schema({
         enum: ["Electrician", "Plumber", "Cleaning & Pest Control", "AC & Appliance Repair", "Carpenter", "Painter", "Salon & Grooming"]
     },
     skills: [
-        { 
+        {
             type: String,
             trim: true
         }
@@ -44,6 +44,17 @@ const providerSchema = new mongoose.Schema({
         type: String,
         required: [true, "City is required for local service"],
         trim: true
+    },
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'], // 'location.type' hamesha 'Point' hona chahiye
+            default: 'Point'
+        },
+        coordinates: {
+            type: [Number], // [longitude, latitude]
+            required: [true, "Provider coordinates are required for geospatial mapping"]
+        }
     },
     experience: {
         type: Number,
@@ -60,10 +71,21 @@ const providerSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "provider"
+    },
+    averageRating: {
+        type: Number,
+        default: 0,
+        min: [0, "Rating cannot be less than 0"],
+        max: [5, "Rating cannot be more than 5"],
+        set: val => Math.round(val * 10) / 10 
+    },
+    totalReviews: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true });
 
 
-const providerModel = mongoose.model('provider', providerSchema);
+const providerModel = mongoose.model('Provider', providerSchema);
 
 export default providerModel;
