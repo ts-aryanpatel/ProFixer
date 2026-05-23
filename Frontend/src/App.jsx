@@ -10,6 +10,8 @@ import About from "./pages/About/About.jsx";
 import ServicesPage from "./pages/ServicesPage/ServicesPage.jsx";
 import Pricing from "./pages/Pricing/Pricing.jsx";
 import Login from "./pages/Login/Login.jsx";
+import Signup from "./pages/Signup/Signup.jsx";
+import OverviewTab from "./pages/CustomerDashboard/OverviewTab.jsx";
 
 function App() {
 
@@ -27,8 +29,11 @@ function App() {
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
           </Routes> 
       </main>
+
+      <OverviewTab />
 
       <Footer />
     </div>

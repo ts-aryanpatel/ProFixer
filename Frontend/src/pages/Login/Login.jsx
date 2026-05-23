@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 
@@ -35,16 +36,38 @@ const Login = () => {
 
     try {
       // 💡 Future Backend Integration:
-      // const response = await axios.post('/api/auth/customer/login', credentials);
-      // localStorage.setItem('token', response.data.accessToken);
-      // navigate('/dashboard');
+      const response = await axios.post('https://profixer-backend.onrender.com/api/customer/login', credentials);
+
+      if (response.accessToken) {
+        localStorage.setItem('accessToken', response.accessToken);
+        
+        alert("Login successful! (Simulated)");
+
+        navigate('/');
+      }
       
       console.log("Customer Login Submitted:", credentials);
       
       // Temporary simulated success
       alert("Login successful! (Simulated)");
     } catch (err) {
-      setError(err.response?.data?.message || "Invalid email or password. Please try again.");
+      console.error("Login Error:", err);
+      
+      // Check if the backend sent our custom global error response
+      if (err.response && err.response.data) {
+        
+        // Extract the English message sent by your global handler
+        setError(err.response.data.message || "Authentication failed. Please try again.");
+        
+        // Log detailed validation errors if any exist in the array
+        if (err.response.data.errors && err.response.data.errors.length > 0) {
+          console.log("Validation Details:", err.response.data.errors);
+        }
+
+      } else {
+        // Fallback for network failures or when Render instance is spinning up
+        setError("Unable to connect to the server. The live instance might be waking up, please retry in a moment.");
+      }
     } finally {
       setLoading(false);
     }
