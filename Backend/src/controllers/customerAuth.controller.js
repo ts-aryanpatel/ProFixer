@@ -5,7 +5,6 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ref } from "process";
 
 const hashToken = (token) => {
     return crypto.createHash('sha256').update(token).digest('hex');
@@ -169,8 +168,8 @@ export const logout = asyncHandler( async (req, res) => {
 
     res.status(200).json({
         success: true,
-        message: 'Provider logged out successfully'
-    });    
+        message: 'Customer logged out successfully'
+    });
 });
 
 

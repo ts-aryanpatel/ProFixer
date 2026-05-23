@@ -8,7 +8,7 @@ const serviceSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        required: [true, 'Service name is require'],
+        required: [true, 'Service name is required'],
         trim: true
     },
     category: {
