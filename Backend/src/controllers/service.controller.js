@@ -119,3 +119,107 @@ export const getServiceSuggestion = asyncHandler(async (req, res) => {
     });
 
 });
+
+export const searchServicesAndProviders = asyncHandler(async (req, res) => {
+    const { city, query } = req.query;
+
+    if (!city) {
+        throw new ApiError(400, "City selection is required for local search");
+    }
+
+    // -----------------------------------------------------------------
+    // FIX: Fuzzy Search, Spaces, Hyphens & Special Characters Handling
+    // -----------------------------------------------------------------
+    let queryRegex = null;
+    const cleanQuery = query ? query.trim() : "";
+
+    if (cleanQuery !== "") {
+        // 1. Saare special characters (hyphen, quotes, brackets) ko safe/escape karo
+        let sanitizedQuery = cleanQuery.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
+        // 2. Agar user ne 'aryan kumar' ya 'aryankumar' search kiya hai,
+        // toh hum har character ke beech me optional spaces/hyphens allowed kar denge.
+        // Isse 'aryankumar' search karne par 'Aryan Kumar' bhi match ho jayega.
+        let fuzzyPattern = sanitizedQuery
+            .split("")
+            .map(char => char.trim() === "" ? "\\s*" : `${char}[\\s\\-_']*`)
+            .join("");
+
+        queryRegex = new RegExp(fuzzyPattern, 'i');
+    }
+
+    // Step 1: Us city ke saare ONLINE providers ki list nikal lo base reference ke liye
+    const localOnlineProviders = await providerModel.find({
+        city: { $regex: new RegExp(city, 'i') },
+        // isVerified: true,
+        // isOnline: true
+    }).select("fullName email phoneNumber category skills bio city averageRating totalReviews totalJobsCompleted isVerified");
+
+    const localProviderIds = localOnlineProviders.map(p => p._id);
+
+    let matchedProviders = [];
+    let matchedServices = [];
+
+    // Agar query keyword hai, toh dynamic smart matching chalao
+    if (cleanQuery !== "" && queryRegex) {
+
+        // A) Services me search karo (Jo sirf local providers ki hon)
+        matchedServices = await serviceModel.find({
+            providerId: { $in: localProviderIds },
+            isActive: true,
+            $or: [
+                { name: { $regex: queryRegex } },
+                { description: { $regex: queryRegex } }
+            ]
+        });
+
+        // Services ke raste se providers ki IDs nikal lo
+        const providerIdsFromServices = matchedServices.map(s => s.providerId.toString());
+
+        // B) Providers me fuzzy search karo (Name, Category, Skills)
+        const directlyMatchedProviders = localOnlineProviders.filter(provider => {
+            return (
+                provider.fullName.match(queryRegex) ||
+                provider.category.match(queryRegex) ||
+                (provider.skills && provider.skills.some(skill => skill.match(queryRegex)))
+            );
+        });
+
+        // C) Dono tarike se mile providers ko combine karke duplicates hatao (Using Map)
+        const combinedProvidersMap = new Map();
+        
+        // Pehle direct profile match wale add karo
+        directlyMatchedProviders.forEach(p => combinedProvidersMap.set(p._id.toString(), p));
+        
+        // Fir jo service match ke raste se mile hain unhe add karo
+        localOnlineProviders.forEach(p => {
+            if (providerIdsFromServices.includes(p._id.toString())) {
+                combinedProvidersMap.set(p._id.toString(), p);
+            }
+        });
+
+        matchedProviders = Array.from(combinedProvidersMap.values());
+
+    } else {
+        // Agar query empty hai, toh us city ka sab kuch default pe de do
+        matchedProviders = localOnlineProviders;
+        matchedServices = await serviceModel.find({
+            providerId: { $in: localProviderIds },
+            isActive: true
+        });
+    }
+
+    // Sorting: Verified aur top-rated professionals hamesha top par rahenge
+    matchedProviders.sort((a, b) => (b.isVerified - a.isVerified) || (b.averageRating - a.averageRating));
+
+    // Response send karein
+    res.status(200).json({
+        success: true,
+        message: matchedProviders.length === 0 ? "No results found for your search" : "Search results fetched successfully",
+        results: {
+            providersCount: matchedProviders.length,
+            servicesCount: matchedServices.length,
+            providers: matchedProviders,
+        }
+    });
+});

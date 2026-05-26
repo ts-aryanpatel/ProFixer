@@ -53,7 +53,7 @@ const providerSchema = new mongoose.Schema({
         },
         coordinates: {
             type: [Number], // [longitude, latitude]
-            required: [true, "Provider coordinates are required for geospatial mapping"]
+            default: [0, 0]
         }
     },
     experience: {
@@ -82,6 +82,11 @@ const providerSchema = new mongoose.Schema({
     totalReviews: {
         type: Number,
         default: 0
+    },
+    totalJobsCompleted: {
+        type: Number,
+        default: 0,
+        min: [0, "Jobs completed cannot be negative"]
     }
 }, { timestamps: true });
 

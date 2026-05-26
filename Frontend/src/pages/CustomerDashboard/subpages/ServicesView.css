@@ -1,0 +1,249 @@
+.services-catalog-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.catalog-header .section-subtitle-text {
+  margin: 4px 0 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Catalog Split Layout Container */
+.catalog-layout-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Left Navigation Sidebar Panel */
+.catalog-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: var(--white);
+  padding: 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.cat-nav-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cat-nav-icon {
+  font-size: 1.2rem;
+}
+
+.cat-nav-link:hover {
+  background-color: var(--bg-light);
+}
+
+/* Active Navigation Tab Style */
+.cat-nav-link.active {
+  background-color: var(--active-blue-bg);
+  color: var(--primary-blue);
+}
+
+/* Right Content Window Pane */
+.catalog-items-display {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Active Category Category Indicator Banner */
+.current-cat-banner {
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  border: 1px solid #BFDBFE;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.banner-big-icon {
+  font-size: 2rem;
+  background: var(--white);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.current-cat-banner h3 {
+  margin: 0 0 2px 0;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+.current-cat-banner p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Micro Service Individual Vertical Cards Layout */
+.micro-services-vertical-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.micro-service-item-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease;
+}
+
+.micro-service-item-card:hover {
+  border-color: #BFDBFE;
+}
+
+.item-details-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.item-details-left h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+.item-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+
+.meta-time {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.meta-divider {
+  color: var(--border-color);
+}
+
+.meta-price {
+  color: var(--text-dark);
+}
+
+.meta-price strong {
+  color: var(--success-green);
+  font-weight: 700;
+}
+
+.item-description-text {
+  margin: 6px 0 0 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Add To Cart Call-To-Action Button */
+.add-to-cart-btn {
+  background-color: var(--white);
+  border: 1px solid var(--primary-blue);
+  color: var(--primary-blue);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: var(--primary-blue);
+  color: var(--white);
+}
+
+.add-to-cart-btn .arrow-sign {
+  font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE LAYOUT MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Mobile me split columns ko block me grid todenge */
+  .catalog-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Horizontal category chips wrapper on small devices */
+  .catalog-sidebar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 8px;
+    gap: 8px;
+    /* -webkit-overflow-scrolling: touch; */
+  }
+
+  .catalog-sidebar-nav::-webkit-scrollbar {
+    display: none; /* Hide scrollbars for slick native pills look */
+  }
+
+  .cat-nav-link {
+    width: auto;
+    white-space: nowrap;
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .micro-service-item-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .item-action-right {
+    width: 100%;
+  }
+
+  .add-to-cart-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

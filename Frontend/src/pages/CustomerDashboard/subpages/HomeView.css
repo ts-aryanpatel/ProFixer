@@ -1,0 +1,551 @@
+/* ==========================================================================
+   GLOBAL & LAYOUT CONTAINER
+   ========================================================================== */
+.home-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section-main-title {
+  font-size: 1.4rem;
+  color: var(--text-dark);
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   1. ACTIVE BOOKING STYLING
+   ========================================================================== */
+.active-booking-card {
+  background-color: var(--white);
+  border-left: 5px solid var(--success-green);
+  padding: 1.2rem 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.booking-alert-status p {
+  margin: 4px 0 8px 0;
+  color: var(--text-dark);
+  font-size: 1rem;
+}
+
+.status-badge.live {
+  background-color: #DCFCE7;
+  color: var(--success-green);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.arrival-eta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.view-details-btn {
+  background: none;
+  border: 1px solid var(--primary-blue);
+  color: var(--primary-blue);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.view-details-btn:hover {
+  background-color: var(--active-blue-bg);
+}
+
+/* ==========================================================================
+   2. HERO SECTION & COMPOSITE SEARCH BAR
+   ========================================================================== */
+.hero-section {
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  padding: 3rem 2rem;
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 2.2rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+}
+
+.hero-content p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Unified Search Bar Capsule Frame */
+.search-bar-composite-container {
+  display: flex;
+  align-items: center;
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: 50px; 
+  padding: 4px 6px 4px 18px; 
+  max-width: 720px;
+  margin: 1.8rem auto 0 auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.city-selector-block {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.geo-icon {
+  font-size: 1.1rem;
+  color: var(--primary-blue);
+}
+
+.hero-city-dropdown {
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  cursor: pointer;
+  outline: none;
+  padding-right: 4px;
+}
+
+.search-divider-line {
+  width: 1px;
+  height: 24px;
+  background-color: var(--border-color);
+  margin: 0 14px;
+}
+
+.search-input-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.search-icon {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.main-search-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  outline: none;
+}
+
+.main-search-input::placeholder {
+  color: #9CA3AF;
+}
+
+/* Search CTA Button */
+.hero-search-action-btn {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 25px; 
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.hero-search-action-btn:hover {
+  background-color: #1D4ED8; 
+}
+
+.hero-search-action-btn:active {
+  transform: scale(0.98); 
+}
+
+/* ==========================================================================
+   3. CATEGORIES GRID STYLING
+   ========================================================================== */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1.2rem;
+}
+
+.category-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-blue);
+}
+
+.category-icon-wrapper {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.category-card h3 {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin: 0;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   4. NEARBY PROFESSIONALS & SERVICES GRID STYLING
+   ========================================================================== */
+.nearby-section {
+  margin-top: 1rem;
+}
+
+.section-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.section-header-flex .section-main-title {
+  margin-bottom: 0; 
+}
+
+.see-all-btn {
+  background: none;
+  border: none;
+  color: var(--primary-blue);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.pros-scroller-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.pro-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.pro-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: #BFDBFE;
+}
+
+.pro-verified-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: #DCFCE7;
+  color: var(--success-green);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* Service tag ke liye extra distinct color style */
+.pro-verified-badge.service-tag {
+  background-color: #E0F2FE;
+  color: #0369A1;
+}
+
+.pro-avatar-circle {
+  width: 70px;
+  height: 70px;
+  background-color: var(--bg-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--border-color);
+}
+
+.pro-details {
+  width: 100%;
+}
+
+.pro-details h3 {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin: 0 0 4px 0;
+  font-weight: 700;
+}
+
+.pro-role {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0 0 12px 0;
+  font-weight: 500;
+}
+
+/* Truncated service description layout structure */
+.home-service-desc-short {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.8em; /* Strict uniformity across items */
+}
+
+/* Skills list chip architecture layout */
+.home-pro-skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 14px 0;
+  height: 26px; /* Caps chips structure to single row layout */
+  overflow: hidden;
+  justify-content: center;
+}
+
+.home-skill-tag {
+  background-color: #F0F4F8;
+  color: #0056b3;
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.pro-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pro-rating {
+  background-color: #FFFBEB;
+  color: #D97706;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.pro-dot {
+  color: var(--border-color);
+}
+
+.pro-jobs {
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.pro-distance {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* Single Service Card Call To Action Button styling */
+.unique-book-btn {
+  width: 100%;
+  background-color: var(--primary-blue, #007bff);
+  color: var(--white, #fff);
+  border: none;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: auto; 
+  transition: background-color 0.2s ease;
+}
+
+.unique-book-btn:hover {
+  background-color: #1D4ED8;
+}
+
+/* Dynamic Action Button Containers for Provider Cards */
+.pro-card-actions-dual {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: auto;
+}
+
+.view-profile-btn-half, 
+.book-professional-btn-half {
+  flex: 1;
+  padding: 10px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-profile-btn-half {
+  background-color: var(--bg-light, #f0f0f0);
+  color: var(--text-dark, #333);
+  border: 1px solid var(--border-color, #ccc);
+}
+
+.view-profile-btn-half:hover {
+  background-color: #e2e8f0;
+}
+
+.book-professional-btn-half {
+  background-color: var(--primary-blue, #007bff);
+  color: white;
+  border: none;
+}
+
+.book-professional-btn-half:hover {
+  background-color: #1D4ED8;
+}
+
+/* Pipeline Status Feedback Containers Layout */
+.home-loading-msg, 
+.home-error-msg, 
+.home-no-data-card {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--border-color);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.home-error-msg {
+  color: #DC2626;
+  background-color: #FEF2F2;
+  border-color: #FCA5A5;
+}
+
+/* ==========================================================================
+   5. MERGED RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+/* Tablet & Mobile Screens Framework */
+@media (max-width: 768px) {
+  .active-booking-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .view-details-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero-section {
+    padding: 2rem 1rem;
+  }
+
+  .hero-content h1 {
+    font-size: 1.6rem;
+  }
+
+  .hero-content p {
+    font-size: 0.95rem;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 0.8rem;
+  }
+
+  /* Nearby Pros Scroll Matrix */
+  .pros-scroller-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 2px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .pros-scroller-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pro-card {
+    flex-shrink: 0;
+    width: 260px; 
+    scroll-snap-align: start;
+    padding: 1.2rem;
+  }
+}
+
+/* Small Smartphone Optimization */
+@media (max-width: 576px) {
+  .search-bar-composite-container {
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .city-selector-block, 
+  .search-input-block {
+    width: 100%;
+  }
+
+  .hero-city-dropdown {
+    width: 100%;
+    padding: 4px 0;
+  }
+
+  .search-divider-line {
+    display: none; 
+  }
+
+  .hero-search-action-btn {
+    width: 100%;
+    text-align: center;
+    border-radius: 8px;
+    padding: 12px;
+  }
+}

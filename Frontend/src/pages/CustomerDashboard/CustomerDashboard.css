@@ -1,0 +1,110 @@
+/* Global Colors and Tokens for Customer Dashboard */
+:root {
+  --primary-blue: #2563EB;
+  --success-green: #22C55E;
+  --warning-amber: #F59E0B;
+  --error-red: #EF4444;
+  --text-dark: #1F2937;
+  --text-muted: #6B7280;
+  --bg-light: #F9FAFB;
+  --white: #FFFFFF;
+  --border-color: #E5E7EB;
+  --active-blue-bg: #EFF6FF;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+/* Base Body/Dashboard Background Setup */
+.dashboard-container {
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  display: flex;
+  flex-direction: row;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Main Content Area Styling (Right Side) */
+.dashboard-main-content {
+  flex: 1;
+  margin-left: 260px; /* Taki content sidebar ke peeche na chupe (Sidebar width = 260px) */
+  padding: 2rem;
+  box-sizing: border-box;
+  min-width: 0; /* Flexbox text overflow fix */
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Layout level)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column; /* Mobile par sidebar upar aur content neeche aa jayega */
+  }
+
+  .dashboard-main-content {
+    margin-left: 0; /* Mobile par sidebar fixed nahi hai, isliye margin hata diya */
+    padding: 1rem;
+  }
+}
+
+
+/* Mobile Top Header Style (Hidden on Desktop) */
+.mobile-top-header {
+  display: none;
+  background-color: var(--white);
+  padding: 12px 16px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.mobile-logo {
+  font-weight: 800;
+  color: var(--primary-blue);
+  font-size: 1.3rem;
+}
+
+.mobile-location {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: var(--bg-light);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+/* Gray Overlay background when mobile sidebar is open */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99;
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+  .mobile-top-header {
+    display: flex; /* Mobile par header dikhao */
+  }
+  .dashboard-main-content {
+    margin-left: 0;
+    padding: 1rem;
+    padding-top: 1rem;
+  }
+}

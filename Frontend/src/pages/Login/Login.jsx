@@ -5,7 +5,7 @@ import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
-  
+
   // 1. State for holding customer credentials
   const [credentials, setCredentials] = useState({
     email: '',
@@ -38,27 +38,30 @@ const Login = () => {
       // 💡 Future Backend Integration:
       const response = await axios.post('https://profixer-backend.onrender.com/api/customer/login', credentials);
 
-      if (response.accessToken) {
-        localStorage.setItem('accessToken', response.accessToken);
-        
+      const responseData = response.data;
+      const token = responseData?.accessToken || response.accessToken;
+
+      if (token) {
+        localStorage.setItem('accessToken', token);
+
         alert("Login successful! (Simulated)");
 
-        navigate('/');
+        navigate('/customer-dashboard');
       }
-      
+
       console.log("Customer Login Submitted:", credentials);
-      
+
       // Temporary simulated success
-      alert("Login successful! (Simulated)");
+      alert("Login successful!");
     } catch (err) {
       console.error("Login Error:", err);
-      
+
       // Check if the backend sent our custom global error response
       if (err.response && err.response.data) {
-        
+
         // Extract the English message sent by your global handler
         setError(err.response.data.message || "Authentication failed. Please try again.");
-        
+
         // Log detailed validation errors if any exist in the array
         if (err.response.data.errors && err.response.data.errors.length > 0) {
           console.log("Validation Details:", err.response.data.errors);
@@ -86,13 +89,13 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="auth-form-group">
             <label htmlFor="email">Email Address</label>
-            <input 
-              type="email" 
-              id="email" 
-              name="email" 
+            <input
+              type="email"
+              id="email"
+              name="email"
               value={credentials.email}
               onChange={handleChange}
-              required 
+              required
               placeholder="name@example.com"
               disabled={loading}
             />
@@ -103,13 +106,13 @@ const Login = () => {
               <label htmlFor="password">Password</label>
               <a href="#forgot" className="forgot-password-link">Forgot Password?</a>
             </div>
-            <input 
-              type="password" 
-              id="password" 
-              name="password" 
+            <input
+              type="password"
+              id="password"
+              name="password"
               value={credentials.password}
               onChange={handleChange}
-              required 
+              required
               placeholder="••••••••"
               disabled={loading}
             />

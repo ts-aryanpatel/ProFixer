@@ -6,6 +6,15 @@ import { addServiceSchema, updateSeviceSchema } from "../validators/service.vali
 
 const router = express.Router();
 
+// ==========================================
+// PUBLIC ROUTES (No Login Required)
+// ==========================================
+
+// GET /api/services/search?city=Lalganj&query=Electrician
+router.get("/search", serviceController.searchServicesAndProviders);
+
+
+
 router.use(verifyProvider);
 
 

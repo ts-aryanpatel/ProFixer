@@ -1,0 +1,180 @@
+.bookings-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Individual Booking Card */
+.booking-status-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* Header Area */
+.booking-card-header {
+  padding: 1.25rem 1.5rem;
+  background-color: #FAFBFD;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.service-title-flex {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.card-category-icon {
+  font-size: 1.8rem;
+  background: var(--white);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.service-title-flex h3 {
+  margin: 0 0 2px 0;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+.booking-id-text {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Dynamic Status Badges */
+.status-badge-indicator {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 30px;
+  text-transform: uppercase;
+}
+
+.status-badge-indicator.assigned { background-color: #E0F2FE; color: #0369A1; }
+.status-badge-indicator.pending { background-color: #FEF3C7; color: #D97706; }
+.status-badge-indicator.completed { background-color: #DCFCE7; color: var(--success-green); }
+
+/* Body Content Area */
+.booking-card-body {
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) 1fr;
+  gap: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  align-items: center;
+}
+
+.booking-detail-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.booking-detail-item .detail-icon { font-size: 1.2rem; }
+.detail-label { margin: 0; font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+.detail-value { margin: 2px 0 0 0; font-size: 0.95rem; color: var(--text-dark); font-weight: 600; }
+
+.payment-tag {
+  font-size: 0.7rem;
+  background-color: var(--bg-light);
+  color: var(--text-muted);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+/* Provider profile micro badge */
+.booking-provider-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--bg-light);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.provider-mini-avatar { font-size: 1.5rem; }
+.provider-mini-label { margin: 0; font-size: 0.75rem; color: var(--text-muted); }
+.provider-mini-name { margin: 0; font-size: 0.85rem; color: var(--text-dark); font-weight: 700; }
+
+/* Action Buttons Footer */
+.booking-card-actions {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background-color: #FAFBFD;
+}
+
+.action-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-trigger { background: none; border: 1px solid var(--border-color); color: var(--text-muted); }
+.cancel-trigger:hover { background-color: #FEF2F2; color: var(--error-red); border-color: #FCA5A5; }
+
+.reschedule-trigger { background: none; border: 1px solid var(--border-color); color: var(--text-dark); }
+.reschedule-trigger:hover { background-color: var(--bg-light); }
+
+.track-primary, .rebook-primary { background-color: var(--primary-blue); border: 1px solid var(--primary-blue); color: var(--white); }
+.track-primary:hover, .rebook-primary:hover { background-color: #1D4ED8; }
+
+.download-invoice { background: none; border: 1px solid var(--border-color); color: var(--text-dark); }
+.download-invoice:hover { background-color: var(--bg-light); }
+
+/* Empty State Handling */
+.empty-bookings-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+.empty-icon { font-size: 3.5rem; display: block; margin-bottom: 1rem; }
+.empty-bookings-state h3 { margin: 0 0 8px 0; color: var(--text-dark); }
+.empty-bookings-state p { margin: 0 0 1.5rem 0; color: var(--text-muted); font-size: 0.95rem; }
+.book-now-prompt-btn { background-color: var(--primary-blue); color: var(--white); border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+
+/* History Card Overrides */
+.history-body { grid-template-columns: repeat(3, 1fr); }
+.history-body p { margin: 0; color: var(--text-dark); font-size: 0.95rem; }
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Cards adjustments)
+   ========================================================================== */
+@media (max-width: 992px) {
+  .booking-card-body, .history-body {
+    grid-template-columns: 1fr; /* Tablet/Mobile par row todkar stacking */
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .booking-card-actions {
+    flex-direction: column-reverse; /* Bottom buttons scale vertical on micro screens */
+  }
+  .action-btn { width: 100%; text-align: center; }
+}

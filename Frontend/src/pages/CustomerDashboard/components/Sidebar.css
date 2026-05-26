@@ -1,0 +1,181 @@
+/* Sidebar Container Base Style (Desktop design) */
+.profixer-sidebar {
+  width: 260px;
+  height: 100vh;
+  background-color: var(--white, #FFFFFF);
+  border-right: 1px solid var(--border-color, #E5E7EB);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+/* Profile Section Styling */
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color, #E5E7EB);
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+  width: 45px;
+  height: 45px;
+  background-color: var(--primary-blue, #2563EB);
+  color: var(--white, #FFFFFF);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.profile-info .user-name {
+  margin: 0;
+  color: var(--text-dark, #1F2937);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.profile-info .user-role {
+  font-size: 0.8rem;
+  color: var(--text-muted, #6B7280);
+}
+
+/* Menu Navigation styling */
+.sidebar-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.menu-section .section-title {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted, #6B7280);
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  font-weight: 700;
+}
+
+.menu-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Reusable Menu Button Styles */
+.menu-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-md, 12px);
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.95rem;
+  color: var(--text-dark, #1F2937);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.menu-btn:hover {
+  background-color: var(--bg-light, #F9FAFB);
+  color: var(--primary-blue, #2563EB);
+}
+
+/* Active State Styles */
+.menu-btn.active {
+  background-color: var(--active-blue-bg, #EFF6FF);
+  color: var(--primary-blue, #2563EB);
+  font-weight: 600;
+}
+
+.menu-icon {
+  font-size: 1.1rem;
+}
+
+/* Logout Button alignment at bottom */
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--border-color, #E5E7EB);
+  padding-top: 1rem;
+}
+
+.logout-btn:hover {
+  background-color: #FEF2F2;
+  color: #EF4444;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (Mobile & Tablets)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .profixer-sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px; /* Hide sidebar on left outside the screen */
+    width: 260px;
+    height: 100vh;
+    box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+    transition: left 0.3s ease-in-out; /* Smooth sliding animation */
+    z-index: 100;
+    border-right: 1px solid var(--border-color);
+  }
+
+  /* When 'open' class is active, slide it in */
+  .profixer-sidebar.open {
+    left: 0;
+  }
+  
+  /* Show close button on mobile only */
+  .sidebar-close-btn {
+    display: block;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .sidebar-profile {
+    padding-top: 1.5rem;
+  }
+
+  .sidebar-menu {
+    flex-direction: column;
+    overflow-x: visible;
+  }
+
+  .menu-section .section-title {
+    display: block; /* Mobile list me heading dikhao wapas */
+  }
+
+  .sidebar-footer {
+    display: block; /* Mobile menu ke bottom me logout dikhao */
+  }
+}
+
+/* Hide close button on desktop */
+.sidebar-close-btn {
+  display: none;
+}

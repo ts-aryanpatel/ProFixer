@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from "./components/Navbar/Navbar.jsx";
 import LandingPage from "./pages/LandingPage/LandingPage.jsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy.jsx";
@@ -11,13 +11,20 @@ import ServicesPage from "./pages/ServicesPage/ServicesPage.jsx";
 import Pricing from "./pages/Pricing/Pricing.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Signup from "./pages/Signup/Signup.jsx";
-import OverviewTab from "./pages/CustomerDashboard/OverviewTab.jsx";
+import CustomerDashboard from "./pages/CustomerDashboard/CustomerDashboard.jsx";
+
+import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 
 function App() {
 
+  const location = useLocation();
+
+  const isDashboard = location.pathname.includes('/customer-dashboard');
+
   return (
     <div className="app-wrapper" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Navbar />
+
+      { !isDashboard && <Navbar /> }
 
       <main style={{ flex: 1 }}>
           <Routes>
@@ -30,12 +37,12 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+
+            <Route path="/customer-dashboard" element={ <ProtectedRoute> <CustomerDashboard /> </ProtectedRoute>} />
           </Routes> 
       </main>
 
-      <OverviewTab />
-
-      <Footer />
+      { !isDashboard && <Footer /> }
     </div>
   );
 }

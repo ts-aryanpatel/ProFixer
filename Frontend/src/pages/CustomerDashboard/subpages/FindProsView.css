@@ -1,0 +1,292 @@
+.find-pros-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.find-pros-header .section-subtitle-text {
+  margin: 4px 0 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Filter Bar Framework */
+.filter-bar-wrapper {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-group label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.filter-dropdown {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+}
+
+.active-results-count {
+  margin-left: auto;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Detailed List Wrapper */
+.pros-vertical-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Individual Row Card Setup (Desktop Standard Layout) */
+.pro-detailed-row-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 120px 1fr 220px;
+  gap: 1.5rem;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.pro-detailed-row-card:hover {
+  border-color: var(--primary-blue);
+  transform: translateY(-2px);
+}
+
+/* Left Column Styling */
+.pro-main-identity-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.pro-row-avatar {
+  width: 75px;
+  height: 75px;
+  background-color: var(--bg-light);
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+}
+
+.row-verified-tag {
+  background-color: #DCFCE7;
+  color: var(--success-green);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+/* Middle Column Details */
+.pro-row-mid-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pro-name-title-flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pro-name-title-flex h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+.pro-row-distance {
+  font-size: 0.85rem;
+  color: var(--primary-blue);
+  background-color: var(--active-blue-bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.pro-row-role {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.pro-row-exp {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.pro-row-stats-badges {
+  display: flex;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.row-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.rating-badge { background-color: #FFFBEB; color: #D97706; }
+.jobs-badge { background-color: var(--bg-light); color: var(--text-dark); border: 1px solid var(--border-color); }
+
+/* Specialties Tags Layout */
+.pro-specialties-tags-flex {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.spec-mini-pill {
+  background-color: #F3F4F6;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/* Right Column Actions */
+.pro-row-action-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.row-primary-btn {
+  background-color: var(--primary-blue);
+  color: var(--white);
+  border: 1px solid var(--primary-blue);
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.row-primary-btn:hover { background-color: #1D4ED8; }
+
+.row-secondary-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-dark);
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.row-secondary-btn:hover { background-color: var(--bg-light); }
+
+/* No items Fallback */
+.no-pros-fallback {
+  text-align: center;
+  background-color: var(--white);
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+.no-pros-fallback span { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
+
+/* ==========================================================================
+   RESPONSIVE LAYOUT BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 992px) {
+  /* Tablet views me layout grids 3 columns se switch hokar stacked blocks banenge */
+  .pro-detailed-row-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+  
+  .pro-name-title-flex {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .pro-row-stats-badges, .pro-specialties-tags-flex {
+    justify-content: center;
+  }
+
+  .active-results-count {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 8px;
+  }
+}
+
+
+/* Filters ko ek row me set karne aur reset button ko match karne ke liye */
+.filter-row-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.disabled-dropdown {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.main-reset-filter-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 6px;
+  cursor: pointer;
+  height: 38px; /* Dropdowns ke height ke barabar */
+  transition: background 0.2s;
+}
+
+.main-reset-filter-btn:hover {
+  background-color: #dc2626;
+}
+
