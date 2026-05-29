@@ -1,7 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+const API_URL = import.meta.env.VITE_API_BASE_URL;
+import axios from 'axios';
 import './Sidebar.css';
 
 const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpen }) => {
+
+  const [user, setUser] = useState({
+    name: 'User',
+    role: 'Customer',
+    initials: 'U'
+  });
+
+  useEffect(() => {
+    const storedCustomer = localStorage.getItem('customer');
+
+    if (storedCustomer) {
+      const customerData = JSON.parse(storedCustomer);
+
+      const nameParts = customerData.name ? customerData.name.split(' ') : [];
+      const initials = nameParts.length > 1
+        ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
+        : nameParts[0] ? nameParts[0][0].toUpperCase() : 'U';
+      
+      setUser({
+        name: customerData.name,
+        role: customerData.role || 'Customer',
+        initials: initials
+      });
+    }
+  }, []);
+
   const menuItems = [
     { id: 'home', label: 'Home', icon: '🏠' },
     { id: 'services', label: 'Services', icon: '🛠️' },
@@ -19,6 +47,35 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
     setIsMobileMenuOpen(false); 
   };
 
+  const handleLogout = async () => {
+    try {
+
+      const accessToken = localStorage.getItem('accessToken');
+      const response = await axios.post(
+        `${API_URL}/customer/logout`,
+        {},
+        { withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${accessToken}` // 👈 Yeh line zaroori hai middleware ke liye
+          }
+        }
+      );
+
+      if (response.data.success) {
+        alert("Logged out successfully from server!");
+      }
+
+
+    } catch (error) {
+      console.error("Backend logout failed:", error.response?.data?.message || error.message);
+    } finally {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('customer');
+
+      window.location.href = '/login';
+    }
+  };
+
   return (
     <aside className={`profixer-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
       
@@ -31,10 +88,10 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
       </button>
 
       <div className="sidebar-profile">
-        <div className="profile-avatar">AK</div>
+        <div className="profile-avatar">{user.initials}</div>
         <div className="profile-info">
-          <h4 className="user-name">Anil Kumar</h4>
-          <span className="user-role">Customer</span>
+          <h4 className="user-name">{user.name}</h4>
+          <span className="user-role">{user.role}</span>
         </div>
       </div>
 
@@ -75,7 +132,7 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
       </nav>
 
       <div className="sidebar-footer">
-        <button className="menu-btn logout-btn">
+        <button className="menu-btn logout-btn" onClick={handleLogout}>
           <span className="menu-icon">🚪</span>
           <span className="menu-label">Logout</span>
         </button>

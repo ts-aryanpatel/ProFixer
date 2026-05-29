@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
@@ -36,7 +37,7 @@ const Login = () => {
 
     try {
       // 💡 Future Backend Integration:
-      const response = await axios.post('https://profixer-backend.onrender.com/api/customer/login', credentials);
+      const response = await axios.post(`${API_URL}/customer/login`, credentials, { withCredentials: true });
 
       const responseData = response.data;
       const token = responseData?.accessToken || response.accessToken;
@@ -44,15 +45,14 @@ const Login = () => {
       if (token) {
         localStorage.setItem('accessToken', token);
 
-        alert("Login successful! (Simulated)");
+        const customerData = responseData.data;
+        localStorage.setItem('customer', JSON.stringify(customerData));
 
+        alert("Login successful!");
         navigate('/customer-dashboard');
       }
 
       console.log("Customer Login Submitted:", credentials);
-
-      // Temporary simulated success
-      alert("Login successful!");
     } catch (err) {
       console.error("Login Error:", err);
 

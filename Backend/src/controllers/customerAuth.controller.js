@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { cookieOptions } from "../config/cookieConfig.js";
 
 const hashToken = (token) => {
     return crypto.createHash('sha256').update(token).digest('hex');
@@ -75,12 +76,7 @@ export const loginCustomer = asyncHandler( async (req, res) => {
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     });
 
-    res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: true,
-        maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie("refreshToken", refreshToken, cookieOptions);
 
     res.status(200).json({
         success: true,
@@ -160,11 +156,7 @@ export const logout = asyncHandler( async (req, res) => {
     session.revoked = true;
     await session.save();
 
-    res.clearCookie("refreshToken", {
-        httpOnly: true, 
-        secure: true, 
-        sameSite: "strict" 
-    });
+    res.clearCookie("refreshToken", cookieOptions);
 
     res.status(200).json({
         success: true,

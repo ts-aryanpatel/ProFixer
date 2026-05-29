@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 import './HomeView.css';
 
 const HomeView = ({ setActiveTab, setPreSelectedCategory }) => {
@@ -17,7 +18,7 @@ const HomeView = ({ setActiveTab, setPreSelectedCategory }) => {
     setError('');
 
     try {
-      const response = await axios.get(`https://profixer-backend.onrender.com/api/services/search?city=${selectedCity}&query=${queryText}`);
+      const response = await axios.get(`${API_URL}/services/search?city=${selectedCity}&query=${queryText}`);
 
       if (response.data.success) {
         setProviders(response.data.results.providers || []);

@@ -10,27 +10,16 @@ import { errorHandler } from "./middlewares/error.middleware.js";
 
 const app = express();
 
+const isProduction = process.env.NODE_ENV === "production";
+
+app.use(cors({
+  origin: isProduction ? "https://profixer-tau.vercel.app" : "http://localhost:5173",
+  credentials: true
+}));
+
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const allowedOrigins = [
-  "http://localhost:5173",                 // Local development ke liye
-  "https://profixer-tau.vercel.app"        // Aapka Vercel deployment URL
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // Agar request bina origin ke ho (jaise Postman ya mobile apps), to allow karein
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('CORS policy se yeh origin allowed nahi hai!'));
-    }
-  },
-  credentials: true
-}));
 
 
 app.use("/api/provider/auth", providerAuthRoutes);
