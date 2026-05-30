@@ -5,6 +5,7 @@ import MyBookingsView from "./subpages/MyBookingsView.jsx";
 import BookingHistoryView from "./subpages/BookingHistoryView.jsx";
 import FindProsView from "./subpages/FindProsView.jsx";
 import ServicesView from "./subpages/ServicesView.jsx";
+import Profile from "./subpages/Profile.jsx";
 import "./CustomerDashboard.css";
 
 const CustomerDashboard = () => {
@@ -25,6 +26,8 @@ const CustomerDashboard = () => {
                 return <MyBookingsView />;
             case 'history':
                 return <BookingHistoryView />;
+            case 'profile':
+                return <Profile />
             default:
                 return <div>Tab Not Found</div>;
         }

@@ -8,7 +8,8 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
   const [user, setUser] = useState({
     name: 'User',
     role: 'Customer',
-    initials: 'U'
+    initials: 'U',
+    avatar: ''
   });
 
   useEffect(() => {
@@ -21,14 +22,15 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
       const initials = nameParts.length > 1
         ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
         : nameParts[0] ? nameParts[0][0].toUpperCase() : 'U';
-      
+
       setUser({
         name: customerData.name,
         role: customerData.role || 'Customer',
-        initials: initials
+        initials: initials,
+        avatar: customerData.avatar || ''
       });
     }
-  }, []);
+  }, [activeTab]);
 
   const menuItems = [
     { id: 'home', label: 'Home', icon: '🏠' },
@@ -44,7 +46,7 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
   // Tab click hone par mobile me menu automatic close hona chahiye
   const handleTabClick = (id) => {
     setActiveTab(id);
-    setIsMobileMenuOpen(false); 
+    setIsMobileMenuOpen(false);
   };
 
   const handleLogout = async () => {
@@ -54,7 +56,8 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
       const response = await axios.post(
         `${API_URL}/customer/logout`,
         {},
-        { withCredentials: true,
+        {
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${accessToken}` // 👈 Yeh line zaroori hai middleware ke liye
           }
@@ -78,17 +81,32 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
 
   return (
     <aside className={`profixer-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
-      
+
       {/* Mobile Close Button */}
-      <button 
+      <button
         className="sidebar-close-btn"
         onClick={() => setIsMobileMenuOpen(false)}
       >
         ✕
       </button>
 
-      <div className="sidebar-profile">
-        <div className="profile-avatar">{user.initials}</div>
+      <div
+        className={`sidebar-profile ${activeTab === 'profile' ? 'active-profile' : ''}`}
+        onClick={() => handleTabClick('profile')}
+        style={{ cursor: 'pointer' }}
+      >
+        <div className="profile-avatar">
+          {user.avatar ? (
+            <img
+              src={user.avatar}
+              alt={user.name}
+              className="sidebar-avatar-img"
+              style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
+            />
+          ) : (
+            user.initials
+          )}
+        </div>
         <div className="profile-info">
           <h4 className="user-name">{user.name}</h4>
           <span className="user-role">{user.role}</span>

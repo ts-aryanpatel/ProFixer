@@ -85,6 +85,7 @@ export const loginCustomer = asyncHandler( async (req, res) => {
         data: {
             id: customer._id,
             name: customer.name,
+            avatar: customer.avatar,
             role: customer.role,
             email: customer.email
         },
