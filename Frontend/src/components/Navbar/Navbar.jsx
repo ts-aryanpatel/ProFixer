@@ -31,7 +31,7 @@ const Navbar = () => {
                     </div>
 
                     <div className='nav-actions'>
-                        <button className='btn-secondary'>Join as Provider</button>
+                        <Link to="/provider-auth" className='btn-secondary' onClick={() => setIsMenuOpen(false)}>Join as Provider</Link>
                         <Link to="/login" className="btn-login" onClick={() => setIsMenuOpen(false)}>
                             Login
                         </Link>

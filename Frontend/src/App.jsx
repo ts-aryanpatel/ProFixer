@@ -12,6 +12,8 @@ import Pricing from "./pages/Pricing/Pricing.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Signup from "./pages/Signup/Signup.jsx";
 import CustomerDashboard from "./pages/CustomerDashboard/CustomerDashboard.jsx";
+import ProviderDashboard from "./pages/ProviderDashboard/ProviderDashboard.jsx";
+import ProviderAuth from "./pages/ProviderAuth/ProviderAuth.jsx";
 
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 
@@ -19,7 +21,7 @@ function App() {
 
   const location = useLocation();
 
-  const isDashboard = location.pathname.includes('/customer-dashboard');
+  const isDashboard = location.pathname.includes('/customer-dashboard') || location.pathname.includes('/provider-dashboard');
 
   return (
     <div className="app-wrapper" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -37,8 +39,10 @@ function App() {
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/provider-auth" element={<ProviderAuth />} />
 
             <Route path="/customer-dashboard" element={ <ProtectedRoute> <CustomerDashboard /> </ProtectedRoute>} />
+            <Route path="/provider-dashboard" element={ <ProtectedRoute> <ProviderDashboard /> </ProtectedRoute>} />
           </Routes> 
       </main>
 

@@ -44,9 +44,9 @@ export const register = asyncHandler(async (req, res) => {
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
-        sameSite: true,
+        sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000
-    });    
+    });
 
     const accessToken = tokenUtil.generateAccessToken({ id: provider._id });
 
