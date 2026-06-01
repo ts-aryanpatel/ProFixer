@@ -70,7 +70,7 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
 
 
     } catch (error) {
-      console.error("Backend logout failed:", error.response?.data?.message || error.message);
+      alert("Logout failed. Please try again.");
     } finally {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('customer');

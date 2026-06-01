@@ -3,18 +3,19 @@ import * as providerAuthController from "../controllers/providerAuth.controller.
 import { validate } from "../middlewares/validate.middleware.js";
 import { providerRegisterSchema, providerLoginSchema } from "../validators/provider.validator.js";
 import { verifyProvider } from "../middlewares/auth.middleware.js";
+import { loginLimiter, registerLimiter, refreshTokenLimiter } from "../middlewares/rateLimiter.middleware.js";
 
 const router = express.Router();
 
 
 // POST  /api/provider/auth/register
-router.post("/register", validate(providerRegisterSchema), providerAuthController.register);
+router.post("/register", registerLimiter, validate(providerRegisterSchema), providerAuthController.register);
 
 // POST  /api/provider/auth/login
-router.post("/login", validate(providerLoginSchema), providerAuthController.login);
+router.post("/login", loginLimiter, validate(providerLoginSchema), providerAuthController.login);
 
 // post  /api/provider/auth/refresh-token
-router.post("/refresh-token", providerAuthController.refreshToken);
+router.post("/refresh-token", refreshTokenLimiter, providerAuthController.refreshToken);
 
 // post  /api/provider/auth/logout
 router.post("/logout", verifyProvider, providerAuthController.logout);

@@ -1,40 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 import './MyBookingsView.css';
 
 const MyBookingsView = () => {
-  // Dummy data for upcoming/active bookings
-  const activeBookings = [
-    {
-      id: 'b1',
-      serviceName: 'AC Deep Cleaning & Service',
-      categoryIcon: '❄️',
-      providerName: 'Rahul Sharma',
-      providerAvatar: '👨‍🔧',
-      date: 'May 26, 2026',
-      timeSlot: '11:00 AM - 12:30 PM',
-      status: 'Partner Assigned',
-      statusCode: 'assigned',
-      amount: '₹499'
-    },
-    {
-      id: 'b2',
-      serviceName: 'Kitchen Sink Pipe Repair',
-      categoryIcon: '🚰',
-      providerName: 'Priya Gupta',
-      providerAvatar: '👩‍🔧',
-      date: 'May 28, 2026',
-      timeSlot: '04:00 PM - 05:30 PM',
-      status: 'Awaiting Confirmation',
-      statusCode: 'pending',
-      amount: '₹249'
+  const [activeBookings, setActiveBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchActiveBookings();
+  }, []);
+
+  const fetchActiveBookings = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await axios.get(`${API_URL}/booking/customer/bookings`, {
+        withCredentials: true
+      });
+      
+      if (response.data.success) {
+        setActiveBookings(response.data.data || []);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to load bookings");
+      setActiveBookings([]);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   return (
     <div className="bookings-view-container">
       <h2 className="section-main-title">My Active Bookings</h2>
 
-      {activeBookings.length === 0 ? (
+      {loading ? (
+        <div className="empty-bookings-state">
+          <span className="empty-icon">⏳</span>
+          <h3>Loading Bookings...</h3>
+        </div>
+      ) : error ? (
+        <div className="empty-bookings-state">
+          <span className="empty-icon">⚠️</span>
+          <h3>Error Loading Bookings</h3>
+          <p>{error}</p>
+          <button className="book-now-prompt-btn" onClick={fetchActiveBookings}>Retry</button>
+        </div>
+      ) : activeBookings.length === 0 ? (
         <div className="empty-bookings-state">
           <span className="empty-icon">📅</span>
           <h3>No Active Bookings</h3>

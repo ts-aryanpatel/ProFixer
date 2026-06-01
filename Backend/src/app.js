@@ -4,7 +4,9 @@ import providerAuthRoutes from "./routes/provider.auth.routes.js";
 import providerRoutes from "./routes/provider.routes.js";
 import serviceRoutes from "./routes/service.routes.js";
 import customerAuthRoutes from "./routes/customer.auth.routes.js";
+import customerProfileRoutes from "./routes/customer.profile.routes.js";
 import bookingRoutes from "./routes/booking.routes.js";
+import contactRoutes from "./routes/contact.routes.js";
 import cookieParser from "cookie-parser";
 import { errorHandler } from "./middlewares/error.middleware.js";
 
@@ -26,10 +28,15 @@ app.use("/api/provider/auth", providerAuthRoutes);
 app.use("/api/provider/profile", providerRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/booking", bookingRoutes);
-
+app.use("/api/contact", contactRoutes);
 
 app.use("/api/customer", customerAuthRoutes);
+app.use("/api/customer", customerProfileRoutes);
 
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ success: true, message: "Server is running" });
+});
 
 app.use(errorHandler);
 

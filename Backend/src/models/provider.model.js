@@ -12,7 +12,8 @@ const providerSchema = new mongoose.Schema({
         required: [true, 'Email is mandatory'],
         unique: true,
         lowercase: true,
-        trim: true
+        trim: true,
+        index: true
     },
     password: {
         type: String,
@@ -22,12 +23,14 @@ const providerSchema = new mongoose.Schema({
     phoneNumber: {
         type: String,
         required: [true, 'Phone number is required'],
-        unique: true
+        unique: true,
+        index: true
     },
     category: {
         type: String,
         required: [true, 'Please select your service category'],
-        enum: ["Electrician", "Plumber", "Cleaning & Pest Control", "AC & Appliance Repair", "Carpenter", "Painter", "Salon & Grooming"]
+        enum: ["Electrician", "Plumber", "Cleaning & Pest Control", "AC & Appliance Repair", "Carpenter", "Painter", "Salon & Grooming"],
+        index: true
     },
     skills: [
         {
@@ -43,7 +46,8 @@ const providerSchema = new mongoose.Schema({
     city: {
         type: String,
         required: [true, "City is required for local service"],
-        trim: true
+        trim: true,
+        index: true
     },
     location: {
         type: {
@@ -62,7 +66,8 @@ const providerSchema = new mongoose.Schema({
     },
     isVerified: {
         type: Boolean,
-        default: false
+        default: false,
+        index: true
     },
     isOnline: {
         type: Boolean,

@@ -1,6 +1,7 @@
 import Customer from "../models/customer.model.js";
 import tokenModel from "../models/token.model.js";
 import * as tokenUtil from "../utils/token.util.js";
+import * as tokenTx from "../utils/tokenTransaction.js";
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { ApiError } from "../utils/ApiError.js";
@@ -108,31 +109,35 @@ export const refreshToken = asyncHandler( async (req, res) => {
     }
 
     const hashRefreshToken = hashToken(refreshToken);
-    const storedToken = await tokenModel.findOne({ userId: decoded.id, refreshTokenHash: hashRefreshToken });
     
-    if (!storedToken || storedToken.revoked) {
-        throw new ApiError(401, "Token is invalid, expired or revoked");
+    // Use transaction for atomic token rotation
+    try {
+        const storedToken = await tokenTx.rotateTokenWithTransaction(
+            decoded.id,
+            hashRefreshToken,
+            hashToken(tokenUtil.generateRefreshToken(decoded.id)),
+            tokenModel
+        );
+
+        const accessToken = tokenUtil.generateAccessToken({ id: storedToken.userId, role: storedToken.onModel });
+        const newRefreshToken = tokenUtil.generateRefreshToken(decoded.id);
+
+        res.cookie("refreshToken", newRefreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Token rotated successfully",
+            accessToken
+        });
+
+    } catch (err) {
+        throw new ApiError(401, err.message || "Token rotation failed");
     }
-
-    const accessToken = tokenUtil.generateAccessToken({ id: storedToken.userId, role: storedToken.onModel });
-    const newRefreshToken = tokenUtil.generateRefreshToken(decoded.id);
-    const hashedNewRefreshToken = hashToken(newRefreshToken);
-
-    storedToken.refreshTokenHash = hashedNewRefreshToken;
-    await storedToken.save();
-
-    res.cookie("refreshToken", newRefreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000
-    });
-
-    res.status(200).json({
-        success: true,
-        message: "Token rotated successfully",
-        accessToken
-    });
 
 });
 
@@ -143,21 +148,22 @@ export const logout = asyncHandler( async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
+        res.clearCookie("refreshToken", { httpOnly: true, secure: true, sameSite: "strict" });
         throw new ApiError(401, "Token not found");
     }
 
     const hashRefreshToken = hashToken(refreshToken);
-    const session = await tokenModel.findOne({ userId: customer._id, refreshTokenHash: hashRefreshToken });
-
-    if (!session) {
+    
+    // Use transaction to atomically revoke token
+    try {
+        await tokenTx.revokeTokenWithTransaction(customer._id, hashRefreshToken, tokenModel);
+    } catch (err) {
+        // Even if revocation fails, clear the cookie
         res.clearCookie("refreshToken", { httpOnly: true, secure: true, sameSite: "strict" });
-        throw new ApiError(404, "Session not found");
+        throw new ApiError(500, "Logout failed");
     }
 
-    session.revoked = true;
-    await session.save();
-
-    res.clearCookie("refreshToken", cookieOptions);
+    res.clearCookie("refreshToken", { httpOnly: true, secure: true, sameSite: "strict" });
 
     res.status(200).json({
         success: true,

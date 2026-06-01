@@ -42,7 +42,7 @@ const ProviderAuth = () => {
       if (isLogin) {
         // Provider Login
         const response = await axios.post(
-          `${API_URL}/provider/auth/login`,
+          `${API_URL}/api/provider/auth/login`,
           {
             email: credentials.email,
             password: credentials.password
@@ -50,19 +50,12 @@ const ProviderAuth = () => {
           { withCredentials: true }
         );
 
-        const responseData = response.data;
-        const token = responseData?.accessToken || response.accessToken;
-
-        if (token) {
-          localStorage.setItem('accessToken', token);
-          const providerData = responseData.data;
-          localStorage.setItem('provider', JSON.stringify(providerData));
+        if (response.data && response.data.success) {
           alert("Login successful!");
           navigate('/provider-dashboard');
         }
       } else {
         // Provider Registration
-        // Map frontend fields to backend expected names and normalize values
         const mapCategory = (services) => {
           if (!services) return "";
           const s = services.toLowerCase();
@@ -73,7 +66,7 @@ const ProviderAuth = () => {
           if (s.includes('carp')) return 'Carpenter';
           if (s.includes('paint')) return 'Painter';
           if (s.includes('salon') || s.includes('groom')) return 'Salon & Grooming';
-          return services; // fallback: raw value
+          return services;
         };
 
         const parseExperience = (exp) => {
@@ -82,11 +75,21 @@ const ProviderAuth = () => {
           return m ? Number(m[0]) : 0;
         };
 
+        // Validate phone number format with try-catch
+        try {
+          const phoneRegex = /^[0-9]{10}$/;
+          if (!phoneRegex.test(credentials.phone.replace(/\D/g, ''))) {
+            throw new Error('Phone number must be exactly 10 digits');
+          }
+        } catch (phoneError) {
+          throw new Error(phoneError.message);
+        }
+
         const payload = {
           fullName: credentials.name,
           email: credentials.email,
           password: credentials.password,
-          phoneNumber: credentials.phone,
+          phoneNumber: credentials.phone.replace(/\D/g, ''),
           city: credentials.address,
           category: mapCategory(credentials.services),
           experience: parseExperience(credentials.experience),
@@ -94,7 +97,7 @@ const ProviderAuth = () => {
         };
 
         const response = await axios.post(
-          `${API_URL}/provider/auth/register`,
+          `${API_URL}/api/provider/auth/register`,
           payload,
           { withCredentials: true }
         );
@@ -114,9 +117,10 @@ const ProviderAuth = () => {
         }
       }
     } catch (err) {
-      console.error("Provider Auth Error:", err);
-
-      if (err.response && err.response.data) {
+      // Handle client-side validation errors first
+      if (err.message && err.message.includes('Phone number')) {
+        setError(err.message);
+      } else if (err.response && err.response.data) {
         const backendData = err.response.data;
 
         if (backendData.errors && backendData.errors.length > 0) {

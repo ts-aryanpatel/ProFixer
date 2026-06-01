@@ -23,7 +23,7 @@ export const addServiceSchema = z.object({
 }).strict({ message: "Extra fields are not allowed" });
 
 
-export const updateSeviceSchema = z.object({
+export const updateServiceSchema = z.object({
     name: z
         .string()
         .trim()
@@ -39,11 +39,13 @@ export const updateSeviceSchema = z.object({
 
     basePrice: z
         .number({ invalid_type_error: "Price must be a number" })
-        .min(0, { message: "Price cannot be negative "})
+        .min(0, { message: "Price cannot be negative"})
         .optional(),
 
     duration: z
         .string()
         .trim()
         .optional()
-}).strict({ message: "Extra fields are not allowed "});
+}).strict({ message: "Extra fields are not allowed"});
+
+export default { addServiceSchema, updateServiceSchema };

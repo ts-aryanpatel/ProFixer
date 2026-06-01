@@ -1,26 +1,55 @@
-import React from 'react';
-import './MyBookingsView.css'; // Same styling rules share karenge
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_BASE_URL;
+import './MyBookingsView.css';
 
 const BookingHistoryView = () => {
-  // Dummy data for completed/past bookings
-  const pastBookings = [
-    {
-      id: 'h1',
-      serviceName: 'Fan Installation & Wiring',
-      categoryIcon: '⚡',
-      providerName: 'Rahul Sharma',
-      date: 'April 14, 2026',
-      status: 'Completed',
-      statusCode: 'completed',
-      amount: '₹350'
+  const [pastBookings, setPastBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchBookingHistory();
+  }, []);
+
+  const fetchBookingHistory = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await axios.get(`${API_URL}/booking/customer/bookings`, {
+        withCredentials: true,
+        params: { status: 'completed' }
+      });
+      
+      if (response.data.success) {
+        const completed = (response.data.data || []).filter(b => b.status === 'completed');
+        setPastBookings(completed);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to load booking history");
+      setPastBookings([]);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   return (
     <div className="bookings-view-container">
       <h2 className="section-main-title">Booking History</h2>
 
-      {pastBookings.length === 0 ? (
+      {loading ? (
+        <div className="empty-bookings-state">
+          <span className="empty-icon">⏳</span>
+          <h3>Loading History...</h3>
+        </div>
+      ) : error ? (
+        <div className="empty-bookings-state">
+          <span className="empty-icon">⚠️</span>
+          <h3>Error Loading History</h3>
+          <p>{error}</p>
+          <button className="book-now-prompt-btn" onClick={fetchBookingHistory}>Retry</button>
+        </div>
+      ) : pastBookings.length === 0 ? (
         <div className="empty-bookings-state">
           <span className="empty-icon">📜</span>
           <h3>No Past Bookings</h3>

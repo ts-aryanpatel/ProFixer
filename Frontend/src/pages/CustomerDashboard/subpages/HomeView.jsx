@@ -21,10 +21,9 @@ const HomeView = ({ setActiveTab, setPreSelectedCategory }) => {
       const response = await axios.get(`${API_URL}/services/search?city=${selectedCity}&query=${queryText}`);
 
       if (response.data.success) {
-        setProviders(response.data.results.providers || []);
+        setProviders(response.data.data.providers || []);
       }
     } catch (err) {
-      console.log("Home Search Error:", err);
       setError(err.response?.data?.message || "Failed to fetch experts");
       setProviders([]);
     } finally {

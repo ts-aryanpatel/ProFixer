@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import './Signup.css';
 
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -36,35 +37,28 @@ const Signup = () => {
         setError('');
 
         try {
-            const response = await axios.post('https://profixer-backend.onrender.com/api/customer/register', credentials);
+            const response = await axios.post(`${API_URL}/api/customer/register`, credentials, { 
+                withCredentials: true 
+            });
 
-            if (response.data && response.success !== false) {
-                alert(response.message || "Registration successful! Please log in.");
+            if (response.data && response.data.success !== false) {
+                alert(response.data.message || "Registration successful! Please log in.");
                 navigate('/login');
             }
         } catch (err) {
-            console.error("Signup Error:", err);
-
             if (err.response && err.response.data) {
                 const backendData = err.response.data;
 
-                // 💡 1. Check karo agar backend ne specific validation errors array bheja hai
                 if (backendData.errors && backendData.errors.length > 0) {
-                    // Array ke pehle error ka main message nikal lo (jaise field validation msg)
                     const firstError = backendData.errors[0];
                     setError(firstError.msg || firstError.message || "Validation failed.");
-                }
-                // 💡 2. Agar array nahi hai par normal message hai
-                else if (backendData.message) {
+                } else if (backendData.message) {
                     setError(backendData.message);
-                }
-                // 💡 3. Agar kuch bhi nahi mila
-                else {
+                } else {
                     setError("Registration failed. Please try again.");
                 }
-
             } else {
-                setError("Unable to connect to the server. The live instance might be waking up, please retry.");
+                setError("Unable to connect to the server. Please try again later.");
             }
         } finally {
             setLoading(false);
@@ -121,7 +115,7 @@ const Signup = () => {
                             onChange={handleChange}
                             required
                             placeholder="Enter your phone number"
-                            disablesd={loading}
+                            disabled={loading}
                         />
                     </div>
 

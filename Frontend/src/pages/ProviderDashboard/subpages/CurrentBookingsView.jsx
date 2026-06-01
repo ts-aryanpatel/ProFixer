@@ -1,84 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_BASE_URL;
 import './CurrentBookingsView.css';
 
 const CurrentBookingsView = () => {
-  const [bookings, setBookings] = useState([
-    {
-      id: 'b1',
-      customerName: 'Amit Patel',
-      customerPhone: '+91 9876543210',
-      serviceName: 'AC Repair & Service',
-      categoryIcon: '❄️',
-      date: 'May 30, 2026',
-      timeSlot: '2:00 PM - 3:30 PM',
-      status: 'accepted',
-      amount: '₹499',
-      address: 'Sector 5, Delhi',
-      rating: 4.8
-    },
-    {
-      id: 'b2',
-      customerName: 'Priya Singh',
-      customerPhone: '+91 8765432109',
-      serviceName: 'Plumbing Repair',
-      categoryIcon: '🚰',
-      date: 'May 30, 2026',
-      timeSlot: '4:00 PM - 5:30 PM',
-      status: 'pending',
-      amount: '₹349',
-      address: 'Dwarka, Delhi',
-      rating: 4.5
-    },
-    {
-      id: 'b3',
-      customerName: 'Rajesh Kumar',
-      customerPhone: '+91 7654321098',
-      serviceName: 'Electrical Wiring',
-      categoryIcon: '⚡',
-      date: 'May 31, 2026',
-      timeSlot: '10:00 AM - 11:30 AM',
-      status: 'accepted',
-      amount: '₹599',
-      address: 'Noida, UP',
-      rating: 4.9
-    },
-    {
-      id: 'b4',
-      customerName: 'Neha Sharma',
-      customerPhone: '+91 6543210987',
-      serviceName: 'Carpentry Work',
-      categoryIcon: '🔨',
-      date: 'May 31, 2026',
-      timeSlot: '3:00 PM - 4:30 PM',
-      status: 'declined',
-      amount: '₹450',
-      address: 'Gurgaon, Haryana',
-      rating: null
-    }
-  ]);
-
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+
+  useEffect(() => {
+    fetchProviderBookings();
+  }, []);
+
+  const fetchProviderBookings = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await axios.get(`${API_URL}/booking/provider/bookings`, {
+        withCredentials: true
+      });
+      
+      if (response.data.success) {
+        setBookings(response.data.data || []);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to load bookings");
+      setBookings([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredBookings = filterStatus === 'all'
     ? bookings
     : bookings.filter(b => b.status === filterStatus);
 
-  const handleAcceptBooking = (id) => {
-    setBookings(bookings.map(b =>
-      b.id === id ? { ...b, status: 'accepted' } : b
-    ));
+  const handleAcceptBooking = async (id) => {
+    try {
+      const response = await axios.put(
+        `${API_URL}/booking/provider/${id}`,
+        { status: 'accepted' },
+        { withCredentials: true }
+      );
+      
+      if (response.data.success) {
+        fetchProviderBookings();
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to accept booking");
+    }
   };
 
-  const handleDeclineBooking = (id) => {
-    setBookings(bookings.map(b =>
-      b.id === id ? { ...b, status: 'declined' } : b
-    ));
+  const handleDeclineBooking = async (id) => {
+    try {
+      const response = await axios.put(
+        `${API_URL}/booking/provider/${id}`,
+        { status: 'declined' },
+        { withCredentials: true }
+      );
+      
+      if (response.data.success) {
+        fetchProviderBookings();
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to decline booking");
+    }
   };
 
   return (
     <div className="bookings-view-container">
       <h2 className="section-main-title">Current Bookings</h2>
 
+      {loading ? (
+        <div className="empty-state">
+          <div className="empty-state-icon">⏳</div>
+          <h3>Loading Bookings...</h3>
+        </div>
+      ) : error ? (
+        <div className="empty-state">
+          <div className="empty-state-icon">⚠️</div>
+          <h3>Error Loading Bookings</h3>
+          <p>{error}</p>
+          <button className="filter-btn" onClick={fetchProviderBookings}>Retry</button>
+        </div>
+      ) : (
+        <>
       {/* Filter Buttons */}
       <div className="filter-buttons">
         <button
@@ -220,6 +227,8 @@ const CurrentBookingsView = () => {
             </div>
           ))}
         </div>
+      )}
+      </>
       )}
     </div>
   );

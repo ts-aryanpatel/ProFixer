@@ -65,7 +65,7 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
         alert("Logged out successfully!");
       }
     } catch (error) {
-      console.error("Logout failed:", error.response?.data?.message || error.message);
+      alert("Logout failed. Please try again.");
     } finally {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('provider');
