@@ -10,18 +10,31 @@ import "./CustomerDashboard.css";
 
 const CustomerDashboard = () => {
     const [activeTab, setActiveTab] = useState('home');
-
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [preSelectedCategory, setPreSelectedCategory] = useState(null);
+
+    const [searchFilters, setSearchFilters] = useState({
+        city: 'Lalganj',
+        query: '',
+        category: 'all'
+    });
 
     const renderSubPage = () => {
         switch (activeTab) {
             case 'home':
-                return <HomeView setActiveTab={setActiveTab} setPreSelectedCategory={setPreSelectedCategory}/>;
+                return <HomeView 
+                    setActiveTab={setActiveTab} 
+                    setPreSelectedCategory={setPreSelectedCategory}
+                    searchFilters={searchFilters} 
+                    setSearchFilters={setSearchFilters} 
+                />;
             case 'services':
                 return <ServicesView preSelectedCategory={preSelectedCategory} setPreSelectedCategory={setPreSelectedCategory}/>;
             case 'findpros':
-                return <FindProsView />;
+                return <FindProsView
+                    searchFilters={searchFilters}         // 👈 Sent to FindPros
+                    setSearchFilters={setSearchFilters}
+                />;
             case 'mybookings':
                 return <MyBookingsView />;
             case 'history':

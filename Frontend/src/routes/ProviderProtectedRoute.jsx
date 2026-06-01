@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children }) => {
 
     // 1. Agar token nahi hai, toh seedhe customer login par bhejo
     if (!token || token === 'undefined' || token === 'null') {
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/provider/login" replace />;
     }
 
     // 2. Agar token hai, par browser me logged in banda "provider" hai,

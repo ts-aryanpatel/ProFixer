@@ -103,7 +103,8 @@ export const login = asyncHandler(async (req, res) => {
         data: {
             id: provider._id,
             email: provider.email,
-            fullName: provider.fullName
+            fullName: provider.fullName,
+            category: provider.category
         },
         accessToken
     });

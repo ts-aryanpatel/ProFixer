@@ -18,9 +18,7 @@ const Navbar = () => {
                 </Link>
 
                 <div className={`burger-menu ${isMenuOpen ? 'open' : ''}`} onClick={toggleMenu}>
-                    <span className='bar'></span>
-                    <span className='bar'></span>
-                    <span className='bar'></span>
+                    ☰
                 </div>
 
                 <div className={`nav-menu-wrapper ${isMenuOpen ? 'active' : ''}`}>
@@ -31,7 +29,7 @@ const Navbar = () => {
                     </div>
 
                     <div className='nav-actions'>
-                        <button className='btn-secondary'>Join as Provider</button>
+                        <Link to="/provider/register" className='btn-secondary' onClick={() => setIsMenuOpen(false)}>Join as Provider</Link>
                         <Link to="/login" className="btn-login" onClick={() => setIsMenuOpen(false)}>
                             Login
                         </Link>

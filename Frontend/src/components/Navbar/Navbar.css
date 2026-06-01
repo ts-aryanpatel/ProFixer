@@ -93,17 +93,19 @@
     border-color: var(--text-muted);
 }
 
-.burger-menu .bar {
-    width: 25px;
-    height: 3px;
-    background-color: var(--text-dark);
-    border-radius: 2px;
-    transition: all 0.3s ease;
+.burger-menu {
+    display: none; 
+    font-size: 28px;
+    background: transparent;
+    border: none;
+    color: var(--text-dark);
+    cursor: pointer;
+    z-index: 1001;
 }
 
 @media (max-width: 768px) {
     .burger-menu {
-        display: flex;
+        display: block;
     }
 
     .burger-menu.open .bar:nth-child(1) {

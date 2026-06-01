@@ -1,0 +1,225 @@
+/* Provider Dashboard Main Styles */
+:root {
+  --primary-blue: #2563EB;
+  --success-green: #22C55E;
+  --warning-amber: #F59E0B;
+  --error-red: #EF4444;
+  --text-dark: #1F2937;
+  --text-muted: #6B7280;
+  --bg-light: #F9FAFB;
+  --white: #FFFFFF;
+  --border-color: #E5E7EB;
+  --active-blue-bg: #EFF6FF;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+.dashboard-container {
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  display: flex;
+  flex-direction: row;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.dashboard-main-content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 2rem;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.mobile-top-header {
+  display: none;
+  background-color: var(--white);
+  padding: 12px 16px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.mobile-logo {
+  font-weight: 800;
+  color: var(--primary-blue);
+  font-size: 1.3rem;
+}
+
+.hamburger-btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 99;
+}
+
+/* Common Section Styles */
+.section-main-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 1.5rem 0;
+}
+
+/* Status Badge Styles */
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-badge.accepted {
+  background-color: #DCFCE7;
+  color: #166534;
+}
+
+.status-badge.pending {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.status-badge.declined {
+  background-color: #FEE2E2;
+  color: #991B1B;
+}
+
+.status-badge.completed {
+  background-color: #DCFCE7;
+  color: #166534;
+}
+
+/* Cards */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 0.2s;
+}
+
+/* Buttons */
+.action-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  color: var(--text-dark);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background: var(--bg-light);
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+}
+
+.action-btn.primary {
+  background: var(--primary-blue);
+  color: var(--white);
+  border-color: var(--primary-blue);
+}
+
+.action-btn.primary:hover {
+  background: #1d4ed8;
+}
+
+.action-btn.success {
+  background: var(--success-green);
+  color: var(--white);
+  border-color: var(--success-green);
+}
+
+.action-btn.danger {
+  background: var(--error-red);
+  color: var(--white);
+  border-color: var(--error-red);
+}
+
+/* Empty States */
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  color: var(--text-dark);
+  margin: 1rem 0 0.5rem 0;
+}
+
+.empty-state p {
+  margin: 0 0 1.5rem 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .dashboard-main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .mobile-top-header {
+    display: flex;
+  }
+
+  .section-main-title {
+    font-size: 1.5rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-main-content {
+    padding: 0.75rem;
+  }
+
+  .section-main-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    padding: 0.75rem;
+  }
+
+  .action-btn {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+}
