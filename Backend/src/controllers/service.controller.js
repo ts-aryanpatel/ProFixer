@@ -3,6 +3,7 @@ import serviceModel from "../models/service.model.js";
 import { SERVICE_SUGGESTIONS } from "../utils/constants.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { listResponse, resourceResponse } from "../utils/apiResponse.js";
 
 
 export const addServices = asyncHandler(async (req, res) => {
@@ -127,19 +128,23 @@ export const searchServicesAndProviders = asyncHandler(async (req, res) => {
         throw new ApiError(400, "City selection is required for local search");
     }
 
-    // -----------------------------------------------------------------
-    // FIX: Fuzzy Search, Spaces, Hyphens & Special Characters Handling
-    // -----------------------------------------------------------------
+    // Add limits to prevent ReDoS and memory issues
+    const MAX_QUERY_LENGTH = 50;
+    const MAX_RESULTS = 50;
+    
     let queryRegex = null;
     const cleanQuery = query ? query.trim() : "";
 
+    // Validate query length to prevent ReDoS attacks
+    if (cleanQuery.length > MAX_QUERY_LENGTH) {
+        throw new ApiError(400, `Search query cannot exceed ${MAX_QUERY_LENGTH} characters`);
+    }
+
     if (cleanQuery !== "") {
-        // 1. Saare special characters (hyphen, quotes, brackets) ko safe/escape karo
+        // Escape special characters to prevent ReDoS
         let sanitizedQuery = cleanQuery.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
-        // 2. Agar user ne 'aryan kumar' ya 'aryankumar' search kiya hai,
-        // toh hum har character ke beech me optional spaces/hyphens allowed kar denge.
-        // Isse 'aryankumar' search karne par 'Aryan Kumar' bhi match ho jayega.
+        // Create fuzzy pattern with length check
         let fuzzyPattern = sanitizedQuery
             .split("")
             .map(char => char.trim() === "" ? "\\s*" : `${char}[\\s\\-_']*`)
@@ -148,22 +153,20 @@ export const searchServicesAndProviders = asyncHandler(async (req, res) => {
         queryRegex = new RegExp(fuzzyPattern, 'i');
     }
 
-    // Step 1: Us city ke saare ONLINE providers ki list nikal lo base reference ke liye
+    // Step 1: Get providers from city with limit
     const localOnlineProviders = await providerModel.find({
-        city: { $regex: new RegExp(city, 'i') },
-        // isVerified: true,
-        // isOnline: true
-    }).select("fullName email phoneNumber category skills bio city averageRating totalReviews totalJobsCompleted isVerified");
+        city: { $regex: new RegExp(city, 'i') }
+    })
+    .select("fullName email phoneNumber category skills bio city averageRating totalReviews totalJobsCompleted isVerified")
+    .limit(MAX_RESULTS);
 
     const localProviderIds = localOnlineProviders.map(p => p._id);
 
     let matchedProviders = [];
     let matchedServices = [];
 
-    // Agar query keyword hai, toh dynamic smart matching chalao
     if (cleanQuery !== "" && queryRegex) {
-
-        // A) Services me search karo (Jo sirf local providers ki hon)
+        // Search services with limit
         matchedServices = await serviceModel.find({
             providerId: { $in: localProviderIds },
             isActive: true,
@@ -171,12 +174,12 @@ export const searchServicesAndProviders = asyncHandler(async (req, res) => {
                 { name: { $regex: queryRegex } },
                 { description: { $regex: queryRegex } }
             ]
-        });
+        })
+        .limit(MAX_RESULTS);
 
-        // Services ke raste se providers ki IDs nikal lo
         const providerIdsFromServices = matchedServices.map(s => s.providerId.toString());
 
-        // B) Providers me fuzzy search karo (Name, Category, Skills)
+        // Filter providers matching query
         const directlyMatchedProviders = localOnlineProviders.filter(provider => {
             return (
                 provider.fullName.match(queryRegex) ||
@@ -185,41 +188,39 @@ export const searchServicesAndProviders = asyncHandler(async (req, res) => {
             );
         });
 
-        // C) Dono tarike se mile providers ko combine karke duplicates hatao (Using Map)
+        // Combine and deduplicate providers
         const combinedProvidersMap = new Map();
-        
-        // Pehle direct profile match wale add karo
         directlyMatchedProviders.forEach(p => combinedProvidersMap.set(p._id.toString(), p));
-        
-        // Fir jo service match ke raste se mile hain unhe add karo
         localOnlineProviders.forEach(p => {
             if (providerIdsFromServices.includes(p._id.toString())) {
                 combinedProvidersMap.set(p._id.toString(), p);
             }
         });
 
-        matchedProviders = Array.from(combinedProvidersMap.values());
-
+        matchedProviders = Array.from(combinedProvidersMap.values()).slice(0, MAX_RESULTS);
     } else {
-        // Agar query empty hai, toh us city ka sab kuch default pe de do
-        matchedProviders = localOnlineProviders;
+        // Return default results with limit
+        matchedProviders = localOnlineProviders.slice(0, MAX_RESULTS);
         matchedServices = await serviceModel.find({
             providerId: { $in: localProviderIds },
             isActive: true
-        });
+        })
+        .limit(MAX_RESULTS);
     }
 
-    // Sorting: Verified aur top-rated professionals hamesha top par rahenge
+    // Sort by verification and rating
     matchedProviders.sort((a, b) => (b.isVerified - a.isVerified) || (b.averageRating - a.averageRating));
 
-    // Response send karein
     res.status(200).json({
         success: true,
         message: matchedProviders.length === 0 ? "No results found for your search" : "Search results fetched successfully",
-        results: {
-            providersCount: matchedProviders.length,
-            servicesCount: matchedServices.length,
+        data: {
             providers: matchedProviders,
+            services: matchedServices
+        },
+        meta: {
+            providersCount: matchedProviders.length,
+            servicesCount: matchedServices.length
         }
     });
 });

@@ -3,47 +3,45 @@ const API_URL = import.meta.env.VITE_API_BASE_URL;
 import axios from 'axios';
 import './Sidebar.css';
 
-const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpen }) => {
+const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpen, userRole }) => {
 
   const [user, setUser] = useState({
-    name: 'User',
-    role: 'Customer',
-    initials: 'U',
+    name: 'Provider',
+    role: 'Service Professional',
+    initials: 'P',
     avatar: ''
   });
 
   useEffect(() => {
-    const storedCustomer = localStorage.getItem('customer');
+    const storedProvider = localStorage.getItem('provider');
 
-    if (storedCustomer) {
-      const customerData = JSON.parse(storedCustomer);
+    if (storedProvider) {
+      const providerData = JSON.parse(storedProvider);
 
-      const nameParts = customerData.name ? customerData.name.split(' ') : [];
+      const nameParts = providerData.name ? providerData.name.split(' ') : [];
       const initials = nameParts.length > 1
         ? (nameParts[0][0] + nameParts[1][0]).toUpperCase()
-        : nameParts[0] ? nameParts[0][0].toUpperCase() : 'U';
+        : nameParts[0] ? nameParts[0][0].toUpperCase() : 'P';
 
       setUser({
-        name: customerData.name,
-        role: customerData.role || 'Customer',
+        name: providerData.name,
+        role: providerData.role || 'Service Professional',
         initials: initials,
-        avatar: customerData.avatar || ''
+        avatar: providerData.avatar || ''
       });
     }
   }, [activeTab]);
 
   const menuItems = [
-    { id: 'home', label: 'Home', icon: '🏠' },
-    { id: 'services', label: 'Services', icon: '🛠️' },
-    { id: 'findpros', label: 'Find Professionals', icon: '🔍' },
+    { id: 'home', label: 'Dashboard', icon: '📊' },
+    { id: 'bookings', label: 'Current Bookings', icon: '📅' },
   ];
 
-  const bookingItems = [
-    { id: 'mybookings', label: 'My Bookings', icon: '📅' },
-    { id: 'history', label: 'Booking History', icon: '📜' },
+  const accountItems = [
+    { id: 'history', label: 'Working History', icon: '📜' },
+    { id: 'income', label: 'Income', icon: '💰' },
   ];
 
-  // Tab click hone par mobile me menu automatic close hona chahiye
   const handleTabClick = (id) => {
     setActiveTab(id);
     setIsMobileMenuOpen(false);
@@ -51,30 +49,26 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
 
   const handleLogout = async () => {
     try {
-
       const accessToken = localStorage.getItem('accessToken');
       const response = await axios.post(
-        `${API_URL}/customer/logout`,
+        `${API_URL}/provider/logout`,
         {},
         {
           withCredentials: true,
           headers: {
-            Authorization: `Bearer ${accessToken}` // 👈 Yeh line zaroori hai middleware ke liye
+            Authorization: `Bearer ${accessToken}`
           }
         }
       );
 
       if (response.data.success) {
-        alert("Logged out successfully from server!");
+        alert("Logged out successfully!");
       }
-
-
     } catch (error) {
       alert("Logout failed. Please try again.");
     } finally {
       localStorage.removeItem('accessToken');
-      localStorage.removeItem('customer');
-
+      localStorage.removeItem('provider');
       window.location.href = '/login';
     }
   };
@@ -82,7 +76,6 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
   return (
     <aside className={`profixer-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
 
-      {/* Mobile Close Button */}
       <button
         className="sidebar-close-btn"
         onClick={() => setIsMobileMenuOpen(false)}
@@ -134,7 +127,7 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
         <div className="menu-section">
           <span className="section-title">My Account</span>
           <ul>
-            {bookingItems.map((item) => (
+            {accountItems.map((item) => (
               <li key={item.id}>
                 <button
                   className={`menu-btn ${activeTab === item.id ? 'active' : ''}`}
@@ -145,6 +138,15 @@ const Sidebar = ({ activeTab, setActiveTab, isMobileMenuOpen, setIsMobileMenuOpe
                 </button>
               </li>
             ))}
+            <li>
+              <button
+                className={`menu-btn ${activeTab === 'profile' ? 'active' : ''}`}
+                onClick={() => handleTabClick('profile')}
+              >
+                <span className="menu-icon">👤</span>
+                <span className="menu-label">Profile</span>
+              </button>
+            </li>
           </ul>
         </div>
       </nav>

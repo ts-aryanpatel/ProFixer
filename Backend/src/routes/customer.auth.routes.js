@@ -4,13 +4,14 @@ import { profileUpdate, changePassword, getProfile, deleteAccount } from "../con
 import { verifyCustomer } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { registerCustomerSchema, loginCustomerSchema, updateProfileSchema, changePasswordSchema } from "../validators/customer.validator.js";
+import { loginLimiter, registerLimiter, refreshTokenLimiter } from "../middlewares/rateLimiter.middleware.js";
 
 const router = express.Router();
 
 
-router.post("/register", validate(registerCustomerSchema), registerCustomer);
-router.post("/login", validate(loginCustomerSchema), loginCustomer);
-router.post("/refresh-token", refreshToken);
+router.post("/register", registerLimiter, validate(registerCustomerSchema), registerCustomer);
+router.post("/login", loginLimiter, validate(loginCustomerSchema), loginCustomer);
+router.post("/refresh-token", refreshTokenLimiter, refreshToken);
 
 
 router.post("/logout", verifyCustomer, logout);

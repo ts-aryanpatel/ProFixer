@@ -91,17 +91,34 @@ export const createBooking = asyncHandler(async (req, res) => {
 export const getCustomerBookings = asyncHandler(async (req, res) => {
 
     const customerId = req.customer._id;
+    
+    // Get pagination parameters from query
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(50, parseInt(req.query.limit) || 10); // Max 50 items per page
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination metadata
+    const total = await Booking.countDocuments({ customerId });
 
     const bookings = await Booking.find({ customerId })
         .populate("providerId", "fullName email phoneNumber")
         .populate("serviceId", "name category price")
-        .sort({ createdAt: -1 });
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
 
     res.status(200).json({
         success: true,
-        message: "Customer bookings fetched successfully.",
-        count: bookings.length,
-        data: bookings
+        message: bookings.length === 0 ? "No bookings found" : "Customer bookings fetched successfully.",
+        data: bookings,
+        pagination: {
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
+            totalItems: total,
+            itemsPerPage: limit,
+            hasNextPage: skip + limit < total,
+            hasPrevPage: page > 1
+        }
     });
 });
 

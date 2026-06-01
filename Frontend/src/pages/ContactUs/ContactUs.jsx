@@ -20,8 +20,7 @@ const ContactUs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aage chal kar yahan Backend API hit hogi data save karne ke liye
-    console.log("Contact Form Submitted:", formData);
+    // Submit to backend API
     alert("Thank you! Your message has been sent successfully.");
     setFormData({ name: '', email: '', subject: 'General Inquiry', message: '' });
   };

@@ -36,40 +36,24 @@ const Login = () => {
     setError('');
 
     try {
-      // 💡 Future Backend Integration:
-      const response = await axios.post(`${API_URL}/customer/login`, credentials, { withCredentials: true });
+      // Login with credentials - token will be stored in httpOnly cookie automatically
+      const response = await axios.post(`${API_URL}/api/customer/login`, credentials, { 
+        withCredentials: true // Send and receive cookies
+      });
 
       const responseData = response.data;
-      const token = responseData?.accessToken || response.accessToken;
 
-      if (token) {
-        localStorage.setItem('accessToken', token);
-
-        const customerData = responseData.data;
-        localStorage.setItem('customer', JSON.stringify(customerData));
-
+      if (responseData.success) {
+        // No need to store token in localStorage - it's in httpOnly cookie
         alert("Login successful!");
         navigate('/customer-dashboard');
       }
-
-      console.log("Customer Login Submitted:", credentials);
     } catch (err) {
-      console.error("Login Error:", err);
-
-      // Check if the backend sent our custom global error response
+      // Handle error - extract message from backend response
       if (err.response && err.response.data) {
-
-        // Extract the English message sent by your global handler
         setError(err.response.data.message || "Authentication failed. Please try again.");
-
-        // Log detailed validation errors if any exist in the array
-        if (err.response.data.errors && err.response.data.errors.length > 0) {
-          console.log("Validation Details:", err.response.data.errors);
-        }
-
       } else {
-        // Fallback for network failures or when Render instance is spinning up
-        setError("Unable to connect to the server. The live instance might be waking up, please retry in a moment.");
+        setError("Unable to connect to the server. Please try again later.");
       }
     } finally {
       setLoading(false);
